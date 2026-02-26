@@ -16,7 +16,7 @@ spec:
       # No imagePullSecrets needed if pulling from the same namespace's internal registry
       containers:
         - name: oracle-client-app
-          image: image-registry.apps.emerald.devops.gov.bc.ca/c9508c-tools/oracle-instantclient-nonroot:latest
+          image: ghcr.io/spencercrose/oracle-tools:latest
           # Define command and arguments for your application that uses Instant Client
           # For a basic test, you can just start a bash shell:
           command: ["/bin/bash", "-c", "echo 'Oracle Instant Client container running non-root.'; ls -l /usr/lib/oracle; sleep infinity"]

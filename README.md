@@ -40,13 +40,27 @@ docker push myregistry.example.com/instantclient:latest
 This repo includes `instantclient-app-deployment.yml`, a manifest that creates a Deployment and Service for testing or demonstration.
 
 1. **Edit the YAML**:
-   - Replace the image reference with your registry (e.g. `image: myregistry.example.com/instantclient:latest`).
+   - Replace the image reference with your registry (default: `image: ghcr.io/spencercrose/oracle-tools:latest`).
+   - Replace the TNS configuration for your Oracle database connection.
+   ```yaml
+   # Sample tnsnames.ora content for Oracle Instant Client
+    # Replace with your actual database connection details
+    ORCLPDB1 =
+      (DESCRIPTION =
+        (ADDRESS = (PROTOCOL = TCP)(HOST = your-db-host)(PORT = 1521))
+        (CONNECT_DATA =
+          (SERVER = DEDICATED)
+          (SERVICE_NAME = orclpdb1)
+        )
+      )
+    ```
    - Adjust resource limits and environment variables as needed.
 
 2. **Apply the manifest**:
 
 ```bash
 oc project my-app-namespace
+oc apply -f tnsnames-config.yml
 oc apply -f instantclient-app-deployment.yml
 ```
 
