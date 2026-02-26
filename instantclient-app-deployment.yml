@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: instantclient-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: instantclient-app
+  template:
+    metadata:
+      labels:
+        app: instantclient-app
+        DataClass: High
+    spec:
+      # No imagePullSecrets needed if pulling from the same namespace's internal registry
+      containers:
+        - name: oracle-client-app
+          image: image-registry.apps.emerald.devops.gov.bc.ca/c9508c-tools/oracle-instantclient-nonroot:latest
+          # Define command and arguments for your application that uses Instant Client
+          # For a basic test, you can just start a bash shell:
+          command: ["/bin/bash", "-c", "echo 'Oracle Instant Client container running non-root.'; ls -l /usr/lib/oracle; sleep infinity"]
+          # If your application needs specific ports:
+          # ports:
+          #   - containerPort: 8080
+          # Define environment variables if needed, e.g., for TNS_ADMIN content
+          env:
+            - name: TNS_ADMIN_CONFIGMAP
+              value: "tnsnames-config" # Name of a ConfigMap for tnsnames.ora
+          volumeMounts:
+            - name: tns-admin-volume
+              mountPath: /opt/oracle/tns_admin
+          # Crucial for non-root enforcement in OpenShift, though often handled by SCC
+          securityContext:
+            runAsNonRoot: true
+            # You can also specify runAsUser and runAsGroup if you want a fixed UID/GID,
+            # but OpenShift SCCs often override these or provide arbitrary ones.
+            # Allowing group write (chmod g+rwX) on directories is key.
+            # runAsUser: 1001 # Example: if you wanted a fixed UID (SCC permitting)
+            # runAsGroup: 1001 # Example: if you wanted a fixed GID (SCC permitting)
+      volumes:
+        - name: tns-admin-volume
+          configMap:
+            name: tnsnames-config # This ConfigMap will hold your tnsnames.ora file
+      # If your application needs custom service account:
+      # serviceAccountName: my-custom-sa
