@@ -9,10 +9,10 @@ The image bundles the client libraries and tools required for applications runni
 
 1. **OpenShift CLI (`oc`)** – authenticated to your cluster.
 2. **Docker / Podman** – for building the container locally.
-3. **Oracle Instant Client ZIP files** – you must download these yourself from [Oracle](https://www.oracle.com/database/technologies/instant-client.html) (accept license terms).
+<!-- 3. **Oracle Instant Client ZIP files** – you must download these yourself from [Oracle](https://www.oracle.com/database/technologies/instant-client.html) (accept license terms).
    - e.g. `instantclient-basiclite-linux.x64-21.3.0.0.0.zip`
-   - Put them in this repo or reference the location in Dockerfile.
-4. A project/namespace in OpenShift where you have push rights.
+   - Put them in this repo or reference the location in Dockerfile. -->
+3. A project/namespace in OpenShift where you have push rights.
 
 ---
 
