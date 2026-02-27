@@ -75,6 +75,41 @@ The sample deployment runs a simple container that may print the Oracle version 
 
 ---
 
+
+---
+
+## 🧾 Accessing SQL*Plus
+
+The Instant Client image includes **SQL\*Plus**, allowing you to run SQL commands directly inside a container.
+
+1. **Get a shell in a pod**:
+
+```bash
+# replace <pod> with the name from oc get pods
+oc rsh <pod>
+```
+
+2. **Authenticate with the database** using a TNS entry from the mounted `tnsnames.ora` or a connection string:
+
+```bash
+# example using TNS name defined in tnsnames-config.yml
+echo "password" | sqlplus username@ORCLPDB1
+
+# or using EZCONNECT
+sqlplus username/password@//your-db-host:1521/orclpdb1
+```
+
+3. **Typical SQL*Plus session**:
+
+```
+SQL> SELECT sysdate FROM dual;
+SQL> EXIT;
+```
+
+> If your project requires interactive use, ensure the pod runs with `stdin: true` and `tty: true` in the deployment spec.
+
+---
+
 ## ⚙️ Configuration
 
 - **tnsnames-config.yml** – contains sample TNS entries that your applications can mount or copy into containers.
@@ -85,5 +120,3 @@ The sample deployment runs a simple container that may print the Oracle version 
 ## 📝 Notes
 
 - The Instant Client is licensed software; ensure compliance when redistributing.
-- You can build a multi-arch image or add additional tools (e.g. SQL*Plus) by modifying the Dockerfile.
-
